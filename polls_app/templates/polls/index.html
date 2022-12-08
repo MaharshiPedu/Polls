@@ -7,8 +7,8 @@
     <title>Document</title>
 </head>
 <body>
-    {% if latest_questions_list %}
-        {% for question in latest_questions_list %}
+    {% if latest_question_list %}
+        {% for question in latest_question_list %}
             <ul>
                 <li><a href="{% url 'polls:detail' question.id %}"></a>{{ question.question_text }}</li>
             </ul>
