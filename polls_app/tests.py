@@ -45,32 +45,36 @@ class QuestionIndexViewTests(TestCase):
 
         question = create_question(question_text="Past question.", days=-30)
         response = self.client.get(reverse("polls:index"))
-        self.assertQuerysetEqual(response.context['latest_question_list'], [question],)
-    
+        self.assertQuerysetEqual(
+            response.context['latest_question_list'], [question],)
+
     def test_future_question(self):
 
         create_question(question_text="Future question.", days=30)
         response = self.client.get(reverse("polls:index"))
         self.assertQuerysetEqual(response.context['latest_question_list'], [])
-    
+
     def test_future_question_and_past_question(self):
-        
+
         question = create_question(question_text="Past question.", days=-30)
         create_question(question_text="Future question.", days=30)
         response = self.client.get(reverse('polls:index'))
-        self.assertQuerysetEqual(response.context['latest_question_list'], [question],)
-    
+        self.assertQuerysetEqual(
+            response.context['latest_question_list'], [question],)
+
     def test_two_past_questions(self):
         question1 = create_question(question_text="Past question 1.", days=-30)
         question2 = create_question(question_text="Past question 2.", days=-5)
         response = self.client.get(reverse('polls:index'))
-        self.assertQuerysetEqual(response.context['latest_question_list'], [question2, question1],)
+        self.assertQuerysetEqual(response.context['latest_question_list'], [
+                                 question2, question1],)
 
 
 class QuestionDetailViewTests(TestCase):
 
     def test_future_question(self):
-        future_question = create_question(question_text='Future question.', days=5)
+        future_question = create_question(
+            question_text='Future question.', days=5)
         url = reverse('polls:detail', args=(future_question.id,))
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
